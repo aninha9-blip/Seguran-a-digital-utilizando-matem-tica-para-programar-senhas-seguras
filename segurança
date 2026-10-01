@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Segurança Digital e Matemática das Senhas</title>
+
+  <style>
+    :root {
+      --fundo: #0b1020;
+      --cartao: #151d32;
+      --texto: #f4f7ff;
+      --suave: #b7c2d9;
+      --destaque: #66e3c4;
+      --borda: #2b3854;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--fundo);
+      color: var(--texto);
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 64px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #13294b, #102b35);
+    }
+
+    header h1 {
+      max-width: 850px;
+      margin: 0 auto 16px;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1.15;
+    }
+
+    header p {
+      max-width: 700px;
+      margin: auto;
+      color: var(--suave);
+      font-size: 1.1rem;
+    }
+
+    main {
+      width: min(1000px, 92%);
+      margin: 36px auto;
+    }
+
+    section, .calculadora {
+      margin-bottom: 24px;
+      padding: 26px;
+      background: var(--cartao);
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+    }
+
+    h2 {
+      color: var(--destaque);
+      margin-top: 0;
+    }
+
+    .formula {
+      padding: 16px;
+      border-left: 4px solid var(--destaque);
+      background: #10182a;
+      border-radius: 8px;
+      font-size: 1.1rem;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-weight: bold;
+    }
+
+    input[type="password"], input[type="text"] {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid var(--borda);
+      border-radius: 8px;
+      background: #0d1424;
+      color: var(--texto);
+      font-size: 1rem;
+    }
+
+    .linha {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      color: var(--suave);
+    }
+
+    button {
+      margin-top: 16px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--destaque);
+      color: #06221c;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      filter: brightness(1.08);
+    }
+
+    #resultado {
+      margin-top: 20px;
+      padding: 16px;
+      background: #10182a;
+      border-radius: 8px;
+    }
+
+    .barra {
+      height: 12px;
+      margin-top: 12px;
+      overflow: hidden;
+      background: #263149;
+      border-radius: 10px;
+    }
+
+    #progresso {
+      width: 0;
+      height: 100%;
+      background: var(--destaque);
+      transition: width 0.3s;
+    }
+
+    ul {
+      padding-left: 22px;
+      color: var(--suave);
+    }
+
+    footer {
+      padding: 24px;
+      text-align: center;
+      color: var(--suave);
+    }
+
+    .aviso {
+      color: #ffd479;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Segurança digital: utilizando matemática para programar senhas seguras</h1>
+    <p>Entenda como o tamanho e a variedade de caracteres aumentam as possibilidades de uma senha.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>O que a matemática tem a ver com senhas?</h2>
+      <p>
+        Uma senha é mais difícil de adivinhar quando existem muitas combinações possíveis.
+        Se cada posição pode usar diferentes caracteres, o número de combinações cresce
+        rapidamente.
+      </p>
+
+      <div class="formula">
+        <strong>Combinações possíveis = N<sup>L</sup></strong>
+        <br>
+        N = quantidade de caracteres disponíveis; L = tamanho da senha.
+      </div>
+
+      <p>
+        Por exemplo, uma senha de 8 caracteres usando apenas letras minúsculas tem
+        <strong>26<sup>8</sup></strong> combinações. Ao incluir letras maiúsculas,
+        números e símbolos, o conjunto de possibilidades aumenta.
+      </p>
+    </section>
+
+    <section class="calculadora">
+      <h2>Calculadora de força da senha</h2>
+      <p>Digite uma senha de exemplo para estimar seu espaço matemático de combinações.</p>
+
+      <label for="senha">Senha para analisar</label>
+      <input id="senha" type="password" autocomplete="off" placeholder="Digite uma senha">
+
+      <div class="linha">
+        <input id="mostrar" type="checkbox">
+        <label for="mostrar" style="margin: 0; font-weight: normal;">Mostrar senha</label>
+      </div>
+
+      <button id="analisar">Analisar senha</button>
+
+      <div id="resultado" aria-live="polite">
+        <strong>O resultado aparecerá aqui.</strong>
+        <div class="barra"><div id="progresso"></div></div>
+      </div>
+
+      <p class="aviso">
+        Por segurança, não digite uma senha real. A análise acontece somente nesta página
+        e não envia dados para nenhum servidor.
+      </p>
+    </section>
+
+    <section>
+      <h2>Como interpretar o cálculo?</h2>
+      <p>
+        O programa estima o tamanho do conjunto de caracteres usado e calcula
+        <strong>N<sup>L</sup></strong>. Também calcula a entropia aproximada:
+        <strong>L × log₂(N)</strong>, medida em bits. Quanto maior esse valor,
+        maior o espaço teórico de busca.
+      </p>
+      <p>
+        Essa estimativa não considera padrões comuns, palavras de dicionário ou senhas
+        já expostas. Por isso, uma senha longa e imprevisível é melhor do que uma senha
+        curta baseada em informações pessoais.
+      </p>
+    </section>
+
+    <section>
+      <h2>Dicas para criar senhas melhores</h2>
+      <ul>
+        <li>Use senhas longas e diferentes para cada conta.</li>
+        <li>Combine letras maiúsculas, minúsculas, números e símbolos.</li>
+        <li>Evite nomes, datas, sequências e palavras muito comuns.</li>
+        <li>Considere usar uma frase-senha longa e fácil de lembrar.</li>
+        <li>Use um gerenciador de senhas e ative a autenticação em dois fatores.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    Projeto educativo de matemática e segurança digital
+  </footer>
+
+  <script>
+    const campoSenha = document.getElementById("senha");
+    const resultado = document.getElementById("resultado");
+    const progresso = document.getElementById("progresso");
+
+    document.getElementById("mostrar").addEventListener("change", function () {
+      campoSenha.type = this.checked ? "text" : "password";
+    });
+
+    document.getElementById("analisar").addEventListener("click", analisarSenha);
+
+    function analisarSenha() {
+      const senha = campoSenha.value;
+
+      if (!senha) {
+        resultado.querySelector("strong").textContent = "Digite uma senha de exemplo para começar.";
+        progresso.style.width = "0";
+        return;
+      }
+
+      let conjunto = 0;
+
+      if (/[a-z]/.test(senha)) conjunto += 26;
+      if (/[A-Z]/.test(senha)) conjunto += 26;
+      if (/[0-9]/.test(senha)) conjunto += 10;
+      if (/[^a-zA-Z0-9]/.test(senha)) conjunto += 33;
+
+      const entropia = senha.length * Math.log2(conjunto);
+      const combinacoes = conjunto ** senha.length;
+
+      let nivel;
+      let largura;
+
+      if (entropia < 28) {
+        nivel = "Fraca";
+        largura = 25;
+      } else if (entropia < 50) {
+        nivel = "Razoável";
+        largura = 50;
+      } else if (entropia < 75) {
+        nivel = "Boa";
+        largura = 75;
+      } else {
+        nivel = "Forte";
+        largura = 100;
+      }
+
+      const combinacoesFormatadas = new Intl.NumberFormat("pt-BR", {
+        notation: "scientific",
+        maximumSignificantDigits: 3
+      }).format(combinacoes);
+
+      resultado.innerHTML = `
+        <strong>Força estimada: ${nivel}</strong>
+        <p>Tamanho: ${senha.length} caracteres</p>
+        <p>Conjunto estimado: ${conjunto} caracteres possíveis por posição</p>
+        <p>Entropia aproximada: ${entropia.toFixed(1)} bits</p>
+        <p>Combinações teóricas: ${combinacoesFormatadas}</p>
+        <div class="barra"><div id="progresso"></div></div>
+      `;
+
+      resultado.querySelector("#progresso").style.width = largura + "%";
+    }
+  </script>
+</body>
+</html>
